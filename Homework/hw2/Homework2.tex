@@ -1,0 +1,50 @@
+\documentclass[a4paper]{article}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\renewcommand{\baselinestretch}{1.25} \normalsize % 行间距1.25倍
+
+% Tips %%%%%%%%%%%%%%%%%%%%
+%  \textit{} 斜体
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{indentfirst}   % 让首行也缩进
+\setlength{\parindent}{0pt} % 默认第一段不首行缩进, 这个命令取消了首行缩进, 也可以用 \nointdent
+\usepackage{microtype}
+
+% 设置页眉
+\lhead{ZID: z5230310}
+\chead{Name: Tian Liu}
+\rhead{Date: 6/6/2020}
+% 页脚, 暂时不需要
+%\lfoot{From: K. Grant}
+%\cfoot{To: Dean A. Smith}
+%\rfoot{\thepage}
+%\renewcommand{\headrulewidth}{0.4pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+	\section*{Q1}
+	We can handle this problem by a divide and conquer recursion. 
+	
+	When we want to compute $M^n$, we could compute $y = M^{\lfloor \frac{n}{2} \rfloor}$. Here, we compute $\frac{n}{2}$ by flooring. Then assign $\lfloor \frac{n}{2}\rfloor$ as the new $N$ and do next recursion. Every recursion we return a value, if $n$ is even, we return $y^2$, otherwise $n$ is odd, we return $y^2 * M$ as we do floor operation for $n / 2$.
+	
+	Doing those, until $n = 0$ and this is also a boundary condition and return 1. Since each recursion reduces the exponent by half, the number of recursive layers is $O(\log n)$, and the algorithm can get results in a very short time.
+	
+	\section*{Q2}
+		
+	
+	\section*{Q3}
+	
+	\section*{Q4}
+		
+	\section*{Q5}
+	
+\end{document}

@@ -62,7 +62,7 @@
 	
 	First, assume we have a Sum Matrix which $sum[i][j]$ equals to  the sum of apples from left top$(0,0)$ to right bottom $(i,j)$ trees which called 2-dimension prefix sum. We can use 2 \textit{for} loops to handle this in $O(n^2)$.
 	
-	Then, we have $(3n -1)^2$ possible squares and for each square we compute the number of apples in this square by $sum[i][j] - sum[i-n][j] - sum[i][j-n] + sum[i-n][j-n]$ in $O(n^2)$. 
+	Then, we have $(3n +1)^2$ possible squares and for each square we compute the number of apples in this square by $sum[i][j] - sum[i-n][j] - sum[i][j-n] + sum[i-n][j-n]$ in $O(n^2)$. 
 	
 	Finally, we can find the square contains the largest number of apples in $O(n^2) + O(n^2) = O(n^2)$.
 	
