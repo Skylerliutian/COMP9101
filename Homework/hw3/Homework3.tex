@@ -1,0 +1,112 @@
+\documentclass[a4paper]{article}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[parfill]{parskip}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\renewcommand{\baselinestretch}{1.25} \normalsize % 行间距1.25倍
+
+% Tips %%%%%%%%%%%%%%%%%%%%
+%  \textit{} 斜体
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{indentfirst}   % 让首行也缩进
+\setlength{\parindent}{0pt} % 默认第一段不首行缩进, 这个命令取消了首行缩进, 也可以用 \nointdent
+\usepackage{microtype}
+
+% 设置页眉
+\lhead{ZID: z5230310}
+\chead{Name: Tian Liu}
+\rhead{Date: 22/6/2020}
+% 页脚, 暂时不需要
+%\lfoot{From: K. Grant}
+%\cfoot{To: Dean A. Smith}
+%\rfoot{\thepage}
+%\renewcommand{\headrulewidth}{0.4pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+	\section*{Q1}
+	Denote sequence A as a snake’s DNA.
+	First we find from venom level $n$ ($n >= 1$), and denote level $N$ DNA as sequence B, which means sequence B correspond to 'SNAKE' in level 1, 'SSNNAAKKEE' in level 2, 'S*$n$N*$n$A*$n$K*$n$E*$n$' in level $n$.
+	
+	Then, we use hash map(denote $hash\_set$)to traverse sequence A and store indexes of each different word (i.e. keys are the different words and values are lists include indexes when this word occur in sequence A), this step will run in $O(n)$.
+	
+	Next, we match words in sequence B in order. $B[i]$ must be behind $B[i-1]$, so when we do matching, we should find an index in $hash\_set[s[i]]$ which is bigger than index of $s[i-1]$ that you have found before.So we use binary search on $hash\_set[s[i]]$ that matches the left boundary (that is, match the first number greater than target value) to find the first value in the current letter index list greater than the previous letter index. This step will run in time $O(nlog n)$.
+	
+	If all words in sequence B are match successfully, which means we can deleting zero or more letters from their DNA and make this snake venomous, and set the variable maximum\_venom\_level to $n$. 
+	
+	We do this by setting $n$ equal to 1 and repeat this, when match successfully, by setting sequence B to level $n+1$, once the left boundary of one word is equal to the length of $hash\_set['word']$, which means we cannot match sequence B.
+		
+	
+	
+%	Then, find and mark the earliest occurrence of the first letter of sequence B(i.e. 'S') in sequence A. Next, for each subsequence letter of sequence B(i.e. 'S' or 'N' or 'A' or 'K' or 'E'), find and mark the earliest occurrence of that letter in sequence A which is after the last marked letter. If you reach the end of sequence B before or at the same time as you reach the end of sequence A, then sequence B is a subsequence of A, which means we can deleting zero or more letters from their DNA and make this snake venomous, and set the variable maximum\_venom\_level to $n$.
+%	
+	By doing this, we finally can work out the maximum venom level of this snake.
+	
+	The Pseudocode shows below is helpful to understand binary search on $hash\_set['word']$.
+	\begin{algorithm}[h]
+  	\caption{}
+  		\begin{algorithmic}[1]
+  			\State $index = -1$
+    		\For{each $w$ in sequence B}
+      			\State $indexes=hash\_set[w]$
+      			\State $left=0$
+      			\State $right=$ length of indexes
+      			\While {$left < right$}
+      				\State $mid = (left + right) // 2$
+      				\If {$indexes[mid] > index$}
+						\State $right=mid$ \textbf{else} $left=mid+1$
+					\EndIf
+ 				\EndWhile
+ 				\If {$left ==$length of indexes}
+ 					\State return False
+ 				\EndIf
+ 				\State $index = indexes[left]$
+    		\EndFor
+       		\label{code:recentEnd}
+  		\end{algorithmic}
+	\end{algorithm}
+
+	\section*{Q2}
+	tutorial 3- 15
+	
+	\section*{Q3}
+	The picture of activities question on lecture
+	\section*{Q4}
+	\section*{Q5}
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{document}

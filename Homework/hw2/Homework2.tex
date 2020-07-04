@@ -77,7 +77,7 @@
 	First, we should know if we do continuously inner product, time complexity would be $O(n^2)$.
 	Look at the figure and combine the lecture slides, we use convolution.
 	
-	Let $N^{'}$ be the net sequence $N$ in the reverse order. So we can do convolution of the sequence $C = A * N^{'}$, in order to do convolution, we first transfer sequence form to $P_A(x)$, $P_N^{'}(x)$, then compute the DFT followed by multiplication, and then use inverse transformation for DFT to recover the coefficients of the product polynomial $P_C(x)$, thus, we got the sequence of $C$. The sequence like 
+	Let $N^{'}$ be the net sequence $N$ in the reverse order. Here we should notice that the flipping of the array is not an actually flipping of the net and it doesn't change anything. It is purely an approach to help is visualise how we obtain the different coefficients which comprise the convolution which in the end is what we are trying to calculate. So we can do convolution of the sequence $C = A * N^{'}$, in order to do convolution, we first transfer sequence form to $P_A(x)$, $P_N^{'}(x)$, then compute the DFT followed by multiplication, and then use inverse transformation for DFT to recover the coefficients of the product polynomial $P_C(x)$, thus, we got the sequence of $C$. The sequence like 
 	
 	$C_0 = A_0*N_0$
 	
@@ -91,7 +91,7 @@
 	
 	$C_{m+n}=A_nN_m$
 	
-	So that we can get a sequence of fish numbers with length $100n+10$. What we do is just use $for$ loop to find the largest possible number of fish in time $O(n)$. And we know convolution in time $O(nlog n)$.
+	So that we can get a sequence of fish numbers with length $100n+10$(the length of net). What we do is just use $for$ loop to find the largest possible number of fish in time $O(n)$. And we know convolution in time $O(nlog n)$.
 	
 	Thus, total time runs in $O(nlog n) + O(n)$ which is $O(nlog n)$. 
 	
@@ -99,7 +99,7 @@
 	\subsection*{(a)}
 	Denote $A = <1,\underbrace{0,0,\dots,0}_{k},1>$, the corresponding polynomial is $P_A(x) = 1 + x^{k+1}$. So the question can be thought as compute the convolution $P_A(x) * P_A(x)$. Thus, we simply multiply them because the form of two polynomials are easily to compute:
 	
-	$P_A(x)P_A(x)=1+2x^{k+1}+k^{2k+2}$
+	$P_A(x)P_A(x)=1+2x^{k+1}+x^{2k+2}$
 	
 	So the convolution of these two sequences is 
 	
@@ -127,7 +127,7 @@
 	
 	Last, the fifth coefficient of $P_C(x)$ equals to $x_3$ multiply the third coefficient of $P_B$ is $-1$ which is $x_3 * -1 = -1$, so $x_3 = 1$.
 	
-	Also, we can use convolution to compute sequence $x$.
+	Actually, I use part of convolution coefficients formula to solve this problem, also we can use convolution to prove that sequence $s$ is correct.
 	
 	Thus, the sequence $<1, -1, 1>$ can be satisfied.
 	
