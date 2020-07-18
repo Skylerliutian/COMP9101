@@ -67,7 +67,7 @@
 	
 	For each trains in list $T$, we do a loop, we pick up in order and we can convert this problem to \textit{Activity selection problem} talked on the lecture, we split the day as start at $d_i$ and end at $a_i$. So the subquestion now is to find a maximum size subset of compatible trains. Note that trains here are non-across midnight trains. Like the answer of \textit{Activity selection problem}, among the trains which do not conflict with the previously chosen trains always chose the one with the earliest end time. At the end of this loop, we delete those trains that picked in this loop and the rest trains as the next loop's non-across midnight trains.
 	
-	After find all maximum size subset of trains for trains in list $T$, if there still have trains we continue do the above steps but the day has the normal start time and end time. Until there are no trains left. In this stage, when finishing one loop, means one more platform added. So finally we can find the number of platforms.
+	After find all maximum size subset of trains for trains in list $T$, now the maximum number of platform is the length of $T$ (i.e. $len(T)$), if there still have trains left, try to find a period when the maximum train across this period which stores in list $T^{'}$, now the maximum number of platform is the length of $T$ (i.e. $len(T)+len(T^{'})$) and continue do the above steps. Until there are no trains left. So finally we can find the number of platforms.
 	
 	In this question, we followed the rules that find the maximum size subset of compatible trains and stay one platform, so when the total number of trains fixed, we can get the minimum number of platforms so that each train can stay without interfering with other trains.
 	  

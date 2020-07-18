@@ -1,0 +1,107 @@
+\documentclass[a4paper]{article}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[parfill]{parskip}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\renewcommand{\baselinestretch}{1.25} \normalsize % 行间距1.25倍
+
+% Tips %%%%%%%%%%%%%%%%%%%%
+%  \textit{} 斜体
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{indentfirst}   % 让首行也缩进
+\setlength{\parindent}{0pt} % 默认第一段不首行缩进, 这个命令取消了首行缩进, 也可以用 \nointdent
+\usepackage{microtype}
+
+% 设置页眉
+\lhead{ZID: z5230310}
+\chead{Name: Tian Liu}
+\rhead{Date: 01/07/2020}
+% 页脚, 暂时不需要
+%\lfoot{From: K. Grant}
+%\cfoot{To: Dean A. Smith}
+%\rfoot{\thepage}
+%\renewcommand{\headrulewidth}{0.4pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+	\section*{Q1}
+% 	Tutorial 4-5
+ 	Let there be $n$ symbols, and $n-1$ operations between them. We solve the following two subproblems: How many ways are there to make the expression staring from at the $l$th symbol and ending at $r$th symbol evaluate to $true$(T), and how many ways to do the same but evaluate to $false$(F). Assume example like "$true$ OR $false$ AND $true$ NAND $false$ NOR $true$", $T(1,2)$ would be the number of ways of making "$true$ and $false$" evaluate to true with correct bracketting and in this case, $T(1,2) = 1$. Otherwise, $T(1,2) = 0$.
+ 	
+ 	The base case is that $T(i,i)$ is 1 if symbol $i$ is $true$, and 0 if symbol $i$ is $false$. The reverse applies to $F(i,i)$.
+ 	
+ 	Otherwise, for each subproblem, we 'split' the expression around an operator $m$ so that everything to the left of the operator is in its own bracket, and everything to the right of the operator is in its own bracket to form two smaller expressions. For example, splitting the sample expression around "AND" would give "($true$ OR $false$) AND ($true$ NAND $false$ NOR $true$)". We then evaluate the subproblems on each of the two sides, and combine the results together depending on the type of operator we are splitting by, and whether we want the result to evaluate true or false. We solve both subproblems in parallel:
+ 	
+ 	\[T(l,r)=\sum_{m-l}^{r-1}Tsplit(l,m,r) \] 
+ 	\[F(l,r)=\sum_{m-l}^{r-1}Fsplit(l,m,r) \] 
+ 	
+	$$TSplit(l,m,r)=\left\{
+	\begin{array}{lcr}
+		T(l,m)\times T(m+1,r)&\\
+		\mbox{\quad\quad if operator m is 'AND'}&\\
+		T(l,m)\times F(m+1,r) + T(l,m)\times T(m+1,r) + F(l,m)\times T(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'OR'}\\
+		T(l,m)\times F(m+1,r) + F(l,m)\times T(m+1,r) + F(l,m)\times M(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'NAND'}\\
+		F(l,m)\times F(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'NOR'}
+	\end{array}
+	\right.
+	$$
+	
+	$$FSplit(l,m,r)=\left\{
+	\begin{array}{lr}
+		T(l,m)\times F(m+1,r) + F(l,m)\times T(m+1,r) + F(l,m)\times F(m+1,r)&\\
+		\mbox{\quad\quad if operator m is 'AND'}&\\
+		F(l,m)\times F(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'OR'}\\
+		T(l,m)\times T(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'NAND'}\\
+		T(l,m)\times T(m+1,r)+ T(l,m)\times F(m+1,r)+ F(l,m)\times T(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'NOR'}
+	\end{array}
+	\right.
+	$$
+	
+	Note that the equations inside the $TSplit$ and $FSplit$ functions are chosen to correspond with the truth tables of the corresponding operator.
+	
+	The complexity is $O(n^3)$. There are $n^2$ different ranges that $l$ and $r$ could cover, and each needs the evaluations of $TSplit$ or $FSplit$ at up to $n$ different splitting points.
+
+
+
+%	\section*{Q2}
+%	\section*{Q3}
+%	\section*{Q4}
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{document}
