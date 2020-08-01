@@ -35,103 +35,103 @@
 %\renewcommand{\footrulewidth}{0.4pt}
 
 \begin{document}
-%	\section*{Q1}
-% 	Let there be $n$ symbols, and $n-1$ operations between them. We solve the following two subproblems: How many ways are there to make the expression staring from at the $l$th symbol and ending at $r$th symbol evaluate to $true$(T), and how many ways to do the same but evaluate to $false$(F). Assume example like "$true$ OR $false$ AND $true$ NAND $false$ NOR $true$", $T(1,2)$ would be the number of ways of making "$true$ and $false$" evaluate to true with correct bracketting and in this case, $T(1,2) = 1$. Otherwise, $T(1,2) = 0$.
-% 	
-% 	The base case is that $T(i,i)$ is 1 if symbol $i$ is $true$, and 0 if symbol $i$ is $false$. The reverse applies to $F(i,i)$.
-% 	
-% 	Otherwise, for each subproblem, we 'split' the expression around an operator $m$ so that everything to the left of the operator is in its own bracket, and everything to the right of the operator is in its own bracket to form two smaller expressions. For example, splitting the sample expression around "AND" would give "($true$ OR $false$) AND ($true$ NAND $false$ NOR $true$)". We then evaluate the subproblems on each of the two sides, and combine the results together depending on the type of operator we are splitting by, and whether we want the result to evaluate true or false. We solve both subproblems in parallel:
-% 	
-% 	\[T(l,r)=\sum_{m-l}^{r-1}Tsplit(l,m,r) \] 
-% 	\[F(l,r)=\sum_{m-l}^{r-1}Fsplit(l,m,r) \] 
-% 	
-%	$$TSplit(l,m,r)=\left\{
-%	\begin{array}{lcr}
-%		T(l,m)\times T(m+1,r)&\\
-%		\mbox{\quad\quad if operator m is 'AND'}&\\
-%		T(l,m)\times F(m+1,r) + T(l,m)\times T(m+1,r) + F(l,m)\times T(m+1,r)\\
-%		\mbox{\quad\quad if operator m is 'OR'}\\
-%		T(l,m)\times F(m+1,r) + F(l,m)\times T(m+1,r) + F(l,m)\times M(m+1,r)\\
-%		\mbox{\quad\quad if operator m is 'NAND'}\\
-%		F(l,m)\times F(m+1,r)\\
-%		\mbox{\quad\quad if operator m is 'NOR'}
-%	\end{array}
-%	\right.
-%	$$
-%	
-%	$$FSplit(l,m,r)=\left\{
-%	\begin{array}{lr}
-%		T(l,m)\times F(m+1,r) + F(l,m)\times T(m+1,r) + F(l,m)\times F(m+1,r)&\\
-%		\mbox{\quad\quad if operator m is 'AND'}&\\
-%		F(l,m)\times F(m+1,r)\\
-%		\mbox{\quad\quad if operator m is 'OR'}\\
-%		T(l,m)\times T(m+1,r)\\
-%		\mbox{\quad\quad if operator m is 'NAND'}\\
-%		T(l,m)\times T(m+1,r)+ T(l,m)\times F(m+1,r)+ F(l,m)\times T(m+1,r)\\
-%		\mbox{\quad\quad if operator m is 'NOR'}
-%	\end{array}
-%	\right.
-%	$$
-%	
-%	Note that the equations inside the $TSplit$ and $FSplit$ functions are chosen to correspond with the truth tables of the corresponding operator.
-%	
-%	The final solution is given by $T(1, n)$.
-%	
-%	The complexity is $O(n^3)$. There are $n^2$ different ranges that $l$ and $r$ could cover, and each needs the evaluations of $TSplit$ or $FSplit$ at up to $n$ different splitting points.
-%
-%
-%	\section*{Q2}
-%	\subsection*{Setup}
-%	First, denote the 2D map called $Martix$, and $Martix[c][r]$($1 \leq c \leq C$ and $1 \leq r \leq R$) representing the elevation of the terrain at that square.
-%	
-%	\subsection*{Subproblem}
-%	For every $r \in [1, C]$ and $c \in [1, C]$, we define the subproblem $P[c][r]$ to be "find the number of moves from lower elevation to higher elevation from $Martix[1][R]$ to $Martix[c][r]$ ". 
-%	
-%	Let $Opt[c][r]$ be the total moves from lower elevation to higher elevation along the path from $Martix[1][R]$ to $Martix[c][r]$, which is the optimal solution to the subproblem $P[c][r]$.
-%	
-%	\subsection*{Build-up order}
-%	As the question mentioned we can only move to the strictly right square or strictly down square, so for the first column and first row, we should solve these subproblems first and then do recursion.
-%	
-%	For the first column $Martix[1][r]$ ($r$ from $R-1$ to 1), can be only derived by the previous square on the left. And same to the first row $Opt[c][R]$ ($c$ from 2 to $C$), can be only derived by the previous square on the up.
-%	
-%	So solve the subproblems in the order $P[1][R], P[1][R-1], \dots, P[1][1], P[2][R] P[3][R]\dots P[C][R]$ and then $P[2][R-1], \dots, P[2][1], P[3][R-1], \dots, P[3][1], \dots, P[C][R-1], \dots, P[C][1]$. From left to right, up to bottom.
-%	\subsection*{Base case}
-%	Because the start square is $Martix[1][R]$, so we set $Opt[1][R] = 0$. So for the first column $Opt[1][r]$ ($r$ from $R-1$ to 1), can be only derived by the previous square on the left, so
-%	
-%		$$Opt[1][r]=
-%		\begin{cases}
-%		Opt[1][r+1] + 0   & Martix[1][r+1] \geq Martix[1][r]\\
-%		Opt[1][r+1] + 1   & Martix[1][r+1] < Martix[1][r]
-%		\end{cases}$$
-%		
-%	The objective is to find the minimum moves from lower elevation to higher elevation, so if $Martix[1][r+1] \textgreater Martix[1][r]$, which means from high elevation to lower elevation, so $Opt[1][r]$ do not need to add one, otherwise $Opt[1][r]$ need to add one. And same to the first row $Opt[c][R]$ ($c$ from 2 to $C$),
-%		
-%		$$Opt[c][R]=
-%		\begin{cases}
-%		Opt[c-1][R] + 0   & Martix[c-1][R] \geq Martix[c][R]\\
-%		Opt[c-1][R] + 1   & Martix[c-1][R] < Martix[c][R]
-%		\end{cases}$$
-%	\subsection*{Recursion}
-%			
-%	Now we do recursion, in order to make it clear, we denote
-%		$$E(p1, p2)=
-%		\begin{cases}
-%		0   & Martix(p1) \geq Martix(p2)\\
-%		1   & Martix(p1) < Martix(p2)
-%		\end{cases}$$
-%	
-%	$p1$ and $p2$ are two points, and format is $p = [c,r]$.
-%
-%		
-%	For $r$ from $R-1$ to 1, and $c$ from 2 to $C$, we have 
-%	
-%	\[Opt[c][r] = min\{Opt[c-1][r]+E([c-1,r],[c,r]),  Opt[c][r+1]+E([c,r+1],[c,r])\}\]
-%	
-%	\subsection*{Final solution}
-%	The final solution is given by $Opt[c][1]$.
-%	
-%	\subsection*{Time complexity}
-%	The complexity is $O(C*R)$ because we only traverse the entire matrix elements once.
+	\section*{Q1}
+ 	Let there be $n$ symbols, and $n-1$ operations between them. We solve the following two subproblems: How many ways are there to make the expression staring from at the $l$th symbol and ending at $r$th symbol evaluate to $true$(T), and how many ways to do the same but evaluate to $false$(F). Assume example like "$true$ OR $false$ AND $true$ NAND $false$ NOR $true$", $T(1,2)$ would be the number of ways of making "$true$ and $false$" evaluate to true with correct bracketting and in this case, $T(1,2) = 1$. Otherwise, $T(1,2) = 0$.
+ 	
+ 	The base case is that $T(i,i)$ is 1 if symbol $i$ is $true$, and 0 if symbol $i$ is $false$. The reverse applies to $F(i,i)$.
+ 	
+ 	Otherwise, for each subproblem, we 'split' the expression around an operator $m$ so that everything to the left of the operator is in its own bracket, and everything to the right of the operator is in its own bracket to form two smaller expressions. For example, splitting the sample expression around "AND" would give "($true$ OR $false$) AND ($true$ NAND $false$ NOR $true$)". We then evaluate the subproblems on each of the two sides, and combine the results together depending on the type of operator we are splitting by, and whether we want the result to evaluate true or false. We solve both subproblems in parallel:
+ 	
+ 	\[T(l,r)=\sum_{m-l}^{r-1}Tsplit(l,m,r) \] 
+ 	\[F(l,r)=\sum_{m-l}^{r-1}Fsplit(l,m,r) \] 
+ 	
+	$$TSplit(l,m,r)=\left\{
+	\begin{array}{lcr}
+		T(l,m)\times T(m+1,r)&\\
+		\mbox{\quad\quad if operator m is 'AND'}&\\
+		T(l,m)\times F(m+1,r) + T(l,m)\times T(m+1,r) + F(l,m)\times T(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'OR'}\\
+		T(l,m)\times F(m+1,r) + F(l,m)\times T(m+1,r) + F(l,m)\times M(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'NAND'}\\
+		F(l,m)\times F(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'NOR'}
+	\end{array}
+	\right.
+	$$
+	
+	$$FSplit(l,m,r)=\left\{
+	\begin{array}{lr}
+		T(l,m)\times F(m+1,r) + F(l,m)\times T(m+1,r) + F(l,m)\times F(m+1,r)&\\
+		\mbox{\quad\quad if operator m is 'AND'}&\\
+		F(l,m)\times F(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'OR'}\\
+		T(l,m)\times T(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'NAND'}\\
+		T(l,m)\times T(m+1,r)+ T(l,m)\times F(m+1,r)+ F(l,m)\times T(m+1,r)\\
+		\mbox{\quad\quad if operator m is 'NOR'}
+	\end{array}
+	\right.
+	$$
+	
+	Note that the equations inside the $TSplit$ and $FSplit$ functions are chosen to correspond with the truth tables of the corresponding operator.
+	
+	The final solution is given by $T(1, n)$.
+	
+	The complexity is $O(n^3)$. There are $n^2$ different ranges that $l$ and $r$ could cover, and each needs the evaluations of $TSplit$ or $FSplit$ at up to $n$ different splitting points.
+
+
+	\section*{Q2}
+	\subsection*{Setup}
+	First, denote the 2D map called $Martix$, and $Martix[c][r]$($1 \leq c \leq C$ and $1 \leq r \leq R$) representing the elevation of the terrain at that square.
+	
+	\subsection*{Subproblem}
+	For every $r \in [1, C]$ and $c \in [1, C]$, we define the subproblem $P[c][r]$ to be "find the number of moves from lower elevation to higher elevation from $Martix[1][R]$ to $Martix[c][r]$ ". 
+	
+	Let $Opt[c][r]$ be the total moves from lower elevation to higher elevation along the path from $Martix[1][R]$ to $Martix[c][r]$, which is the optimal solution to the subproblem $P[c][r]$.
+	
+	\subsection*{Build-up order}
+	As the question mentioned we can only move to the strictly right square or strictly down square, so for the first column and first row, we should solve these subproblems first and then do recursion.
+	
+	For the first column $Martix[1][r]$ ($r$ from $R-1$ to 1), can be only derived by the previous square on the left. And same to the first row $Opt[c][R]$ ($c$ from 2 to $C$), can be only derived by the previous square on the up.
+	
+	So solve the subproblems in the order $P[1][R], P[1][R-1], \dots, P[1][1], P[2][R] P[3][R]\dots P[C][R]$ and then $P[2][R-1], \dots, P[2][1], P[3][R-1], \dots, P[3][1], \dots, P[C][R-1], \dots, P[C][1]$. From left to right, up to bottom.
+	\subsection*{Base case}
+	Because the start square is $Martix[1][R]$, so we set $Opt[1][R] = 0$. So for the first column $Opt[1][r]$ ($r$ from $R-1$ to 1), can be only derived by the previous square on the left, so
+	
+		$$Opt[1][r]=
+		\begin{cases}
+		Opt[1][r+1] + 0   & Martix[1][r+1] \geq Martix[1][r]\\
+		Opt[1][r+1] + 1   & Martix[1][r+1] < Martix[1][r]
+		\end{cases}$$
+		
+	The objective is to find the minimum moves from lower elevation to higher elevation, so if $Martix[1][r+1] \textgreater Martix[1][r]$, which means from high elevation to lower elevation, so $Opt[1][r]$ do not need to add one, otherwise $Opt[1][r]$ need to add one. And same to the first row $Opt[c][R]$ ($c$ from 2 to $C$),
+		
+		$$Opt[c][R]=
+		\begin{cases}
+		Opt[c-1][R] + 0   & Martix[c-1][R] \geq Martix[c][R]\\
+		Opt[c-1][R] + 1   & Martix[c-1][R] < Martix[c][R]
+		\end{cases}$$
+	\subsection*{Recursion}
+			
+	Now we do recursion, in order to make it clear, we denote
+		$$E(p1, p2)=
+		\begin{cases}
+		0   & Martix(p1) \geq Martix(p2)\\
+		1   & Martix(p1) < Martix(p2)
+		\end{cases}$$
+	
+	$p1$ and $p2$ are two points, and format is $p = [c,r]$.
+
+		
+	For $r$ from $R-1$ to 1, and $c$ from 2 to $C$, we have 
+	
+	\[Opt[c][r] = min\{Opt[c-1][r]+E([c-1,r],[c,r]),  Opt[c][r+1]+E([c,r+1],[c,r])\}\]
+	
+	\subsection*{Final solution}
+	The final solution is given by $Opt[c][1]$.
+	
+	\subsection*{Time complexity}
+	The complexity is $O(C*R)$ because we only traverse the entire matrix elements once.
 	
 		
 	\section*{Q3}
@@ -162,30 +162,30 @@
 	\subsection*{Time complexity}
 	Clearly such algorithm runs in time linear in the number of all $N$ days.
 	
-%	\section*{Q4}
-%	\subsection*{Subproblem}
-%	For start vertex $S$ and destination vertex $X$, $S, X \in V$, and length $j$, $j \in [1, k]$. We define subproblem $P(S, X, j)$ to be "find the longest length from vertex $S$ to vertex $X$ through $j$ edges" 
-%	
-%	Let $dp[S][X][j]$ be the longest path(i.e. total weight is maximum) from node $S$ to node $X$ using exactly $J$ edges in total, which is the optimal solution to the subproblem $P(S, X, j)$.
-%	\subsection*{Build-up order}
-%	For every vertex $S \in V$, and for every vertex $X \in V$, also for length $j \in [1,k]$. We handle subproblems in the order $P(S_1, X_1, 1),\dots ,P(S_1, X_1, k), P(S_1, X_2, 1),\dots ,P(S_1, X_2, k),\dots,P(S_n, X_n, 1),\dots ,P(S_n, X_n, k)$.
-%	
-%	We can use nested loops to traverse all vertices as start node and destination node.
-%	\subsection*{Base case}
-%	For vertex $S \in V$,
-%	\[dp[S][S][0] = 0\]
-%	For vertices $S$ and $X$, $S, X \in V$, and length $j = 1$, if $S$ and $X$ are connected,
-%	\[dp[S][X][1] = weight(S,X)\]
-%	Otherwise we don't store $dp[S][X][j]$.
-%	\subsection*{Recursion}
-%	For start vertex $S$, destination vertex $X$, $S, X\in V$ and length $j \in [2, k]$, we have,
-%	\[dp[S][X][j] = max\{dp[S][Y][j-1] + weight(Y,X)\}\]
-%	for all $Y$ which has an edge from $Y$ to $X$ and $Y \in V$.
-%	\subsection*{Final solution}
-%	The final solution of the problem is the maximum value returned by any of these subproblems,
-%	\[max\{dp[S][X][k]: S, X \in V\}\]
-%	\subsection*{Time complexity}
-%	The complexity is $O(V^{2}*E*k)$ because for two vertices, start vertex and destination vertex, which means one subproblem, the algorithm runs in $O(E*k)$, and there are $V^2$ subproblems, so the total runs in $O(V^{2}*E*k)$.
+	\section*{Q4}
+	\subsection*{Subproblem}
+	For start vertex $S$ and destination vertex $X$, $S, X \in V$, and length $j$, $j \in [1, k]$. We define subproblem $P(S, X, j)$ to be "find the longest length from vertex $S$ to vertex $X$ through $j$ edges" 
+	
+	Let $dp[S][X][j]$ be the longest path(i.e. total weight is maximum) from node $S$ to node $X$ using exactly $J$ edges in total, which is the optimal solution to the subproblem $P(S, X, j)$.
+	\subsection*{Build-up order}
+	For every vertex $S \in V$, and for every vertex $X \in V$, also for length $j \in [1,k]$. We handle subproblems in the order $P(S_1, X_1, 1),\dots ,P(S_1, X_1, k), P(S_1, X_2, 1),\dots ,P(S_1, X_2, k),\dots,P(S_n, X_n, 1),\dots ,P(S_n, X_n, k)$.
+	
+	We can use nested loops to traverse all vertices as start node and destination node.
+	\subsection*{Base case}
+	For vertex $S \in V$,
+	\[dp[S][S][0] = 0\]
+	For vertices $S$ and $X$, $S, X \in V$, and length $j = 1$, if $S$ and $X$ are connected,
+	\[dp[S][X][1] = weight(S,X)\]
+	Otherwise we don't store $dp[S][X][j]$.
+	\subsection*{Recursion}
+	For start vertex $S$, destination vertex $X$, $S, X\in V$ and length $j \in [2, k]$, we have,
+	\[dp[S][X][j] = max\{dp[S][Y][j-1] + weight(Y,X)\}\]
+	for all $Y$ which has an edge from $Y$ to $X$ and $Y \in V$.
+	\subsection*{Final solution}
+	The final solution of the problem is the maximum value returned by any of these subproblems,
+	\[max\{dp[S][X][k]: S, X \in V\}\]
+	\subsection*{Time complexity}
+	The complexity is $O(V^{2}*E*k)$ because for two vertices, start vertex and destination vertex, which means one subproblem, the algorithm runs in $O(E*k)$, and there are $V^2$ subproblems, so the total runs in $O(V^{2}*E*k)$.
 		
 	
 	
